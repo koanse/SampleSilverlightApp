@@ -1,0 +1,130 @@
+﻿<navigation:Page 
+  x:Class="StudBusApp.Views.ОценкиPage" 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+xmlns:converter="clr-namespace:StudBusApp.Views"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"  
+  Style="{StaticResource PageStyle}" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:StudBusApp.Web" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    <UserControl.Resources>
+        <converter:КодСтудентаConverter x:Key="КодСтудентаConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer x:Name="PageScrollViewer" Style="{StaticResource PageScrollViewerStyle}">
+
+            <StackPanel x:Name="ContentStackPanel" Style="{StaticResource ContentStackPanelStyle}" Height="Auto" Width="Auto">
+
+                <TextBlock x:Name="HeaderText" Style="{StaticResource HeaderTextStyle}" 
+                           Text="Оценки" HorizontalAlignment="Center" />
+                <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Группа, CreateList=true}" Height="0" LoadedData="группаDomainDataSource_LoadedData" Name="группаDomainDataSource" QueryName="GetГруппаQuery" Width="0" DataContext="{Binding}">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                </riaControls:DomainDataSource>
+                <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Студент, CreateList=true}" Height="0" LoadedData="студентDomainDataSource_LoadedData" Name="студентDomainDataSource" QueryName="GetСтудентQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                </riaControls:DomainDataSource>
+                <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Дисциплина, CreateList=true}" Height="0" LoadedData="дисциплинаDomainDataSource_LoadedData" Name="дисциплинаDomainDataSource" QueryName="GetДисциплинаQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                </riaControls:DomainDataSource>
+                <riaControls:DomainDataSource AutoLoad="False" d:DesignData="{d:DesignInstance my:Оценка, CreateList=true}" Height="0" LoadedData="оценкаDomainDataSource_LoadedData" Name="оценкаDomainDataSource" QueryName="GetОценкаByГруппаДисциплинаQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                    <riaControls:DomainDataSource.QueryParameters>
+                        <riaControls:Parameter ParameterName="КодДисциплины" />
+                        <riaControls:Parameter ParameterName="КодГруппы" />
+                    </riaControls:DomainDataSource.QueryParameters>
+                </riaControls:DomainDataSource>
+                <StackPanel Height="30" Orientation="Horizontal" Width="474">
+                    <sdk:Label Content="Дисциплина:" Margin="3" VerticalAlignment="Center" />
+                    <ComboBox DisplayMemberPath="Наименование" Height="23" ItemsSource="{Binding Mode=OneWay, ElementName=дисциплинаDomainDataSource, Path=Data}" Name="кодComboBox" Width="120" SelectedValuePath="Код">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <sdk:Label Content="Группа:" Margin="3" VerticalAlignment="Center" />
+                    <ComboBox DisplayMemberPath="Наименование" Height="23" ItemsSource="{Binding Mode=OneWay, ElementName=группаDomainDataSource, Path=Data}"
+                              Name="кодComboBox1" Width="120" SelectedValuePath="Код">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <Button Content="Загрузить" Margin="3" Name="оценкаDomainDataSourceLoadButton" Width="84" Click="оценкаDomainDataSourceLoadButton_Click" />
+                </StackPanel>
+                <Grid DataContext="{Binding ElementName=оценкаDomainDataSource, Path=Data}" Name="grid3" Height="90" Width="362">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="12*" />
+                    </Grid.RowDefinitions>
+                    <sdk:Label Content="Студент:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+                    <ComboBox DisplayMemberPath="ФИО" Grid.Column="1" Grid.Row="1" Height="23" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=студентDomainDataSource, Path=Data}" Margin="3" Name="кодСтудентаComboBox" VerticalAlignment="Center" Width="120" SelectedValuePath="Код" SelectedValue="{Binding Path=Data.CurrentItem.КодСтудента, Mode=TwoWay, ElementName=оценкаDomainDataSource}">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <sdk:Label Content="Оценка:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="3" Name="оценка1TextBox" Text="{Binding Path=Data.CurrentItem.Оценка1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, ElementName=оценкаDomainDataSource}" VerticalAlignment="Center" Width="120" />
+                    <Button Content="Добавить" Height="23" Name="button2" Width="75" Click="button2_Click" Grid.Column="2" Margin="8,3,263,6" Grid.Row="3" />
+                    <Button Content="OK" Height="23" Name="button4" Width="75" Click="button4_Click" Grid.ColumnSpan="2" Margin="6,3,102,6" Grid.Row="3" />
+                    <Button Content="Удалить" Height="23" Name="button3" Click="button3_Click" Grid.Column="2" Margin="89,3,176,6" Grid.Row="3" />
+                </Grid>
+                <sdk:DataGrid AutoGenerateColumns="False" Height="264" ItemsSource="{Binding ElementName=оценкаDomainDataSource, Path=Data}" Name="оценкаDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Width="525">
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn x:Name="кодСтудентаColumn" Binding="{Binding Path=КодСтудента,Converter={StaticResource КодСтудентаConverter},Mode=OneWay}" Header="Студент" Width="350" />
+                        <sdk:DataGridTextColumn x:Name="оценка1Column" Binding="{Binding Path=Оценка1,Mode=OneWay}" Header="Оценка" Width="*" />
+                    </sdk:DataGrid.Columns>
+                </sdk:DataGrid>
+                <Button Content="Сохранить" Height="23" Name="button1" Width="75" Click="button1_Click" />
+                <Grid DataContext="{Binding ElementName=дисциплинаDomainDataSource, Path=Data}" HorizontalAlignment="Left" Name="grid1" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <Grid DataContext="{Binding ElementName=группаDomainDataSource, Path=Data}" HorizontalAlignment="Left" Name="grid2" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <riaControls:DomainDataSource AutoLoad="False" d:DesignData="{d:DesignInstance my:Студент, CreateList=true}" Height="0" LoadedData="студентDomainDataSource1_LoadedData" Name="студентDomainDataSource1" QueryName="GetСтудентГруппыБезОценокПоДисциплинеQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                    <riaControls:DomainDataSource.QueryParameters>
+                        <riaControls:Parameter ParameterName="КодГруппы" Value="{Binding ElementName=кодГруппыTextBox, Path=Text}" />
+                        <riaControls:Parameter ParameterName="КодДисциплины" Value="{Binding ElementName=кодДисциплиныTextBox, Path=Text}" />
+                    </riaControls:DomainDataSource.QueryParameters>
+                </riaControls:DomainDataSource>
+            </StackPanel>
+
+        </ScrollViewer>
+        <toolkit:DataField HorizontalAlignment="Left" Margin="740,211,0,0" Name="dataField1" VerticalAlignment="Top" />
+    </Grid>
+
+</navigation:Page>

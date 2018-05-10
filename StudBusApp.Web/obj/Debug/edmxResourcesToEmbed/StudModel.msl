@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities">
+    <EntitySetMapping Name="Группа">
+      <EntityTypeMapping TypeName="dbModel.Группа">
+        <MappingFragment StoreEntitySet="Группа">
+          <ScalarProperty Name="Код" ColumnName="Код" />
+          <ScalarProperty Name="Наименование" ColumnName="Наименование" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Дисциплина">
+      <EntityTypeMapping TypeName="dbModel.Дисциплина">
+        <MappingFragment StoreEntitySet="Дисциплина">
+          <ScalarProperty Name="Код" ColumnName="Код" />
+          <ScalarProperty Name="Наименование" ColumnName="Наименование" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Оценка">
+      <EntityTypeMapping TypeName="dbModel.Оценка">
+        <MappingFragment StoreEntitySet="Оценка">
+          <ScalarProperty Name="КодДисциплины" ColumnName="КодДисциплины" />
+          <ScalarProperty Name="КодСтудента" ColumnName="КодСтудента" />
+          <ScalarProperty Name="Оценка1" ColumnName="Оценка" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Студент">
+      <EntityTypeMapping TypeName="dbModel.Студент">
+        <MappingFragment StoreEntitySet="Студент">
+          <ScalarProperty Name="Код" ColumnName="Код" />
+          <ScalarProperty Name="КодГруппы" ColumnName="КодГруппы" />
+          <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ОценкаПодробно">
+      <EntityTypeMapping TypeName="dbModel.ОценкаПодробно">
+        <MappingFragment StoreEntitySet="ОценкаПодробно">
+          <ScalarProperty Name="КодГруппы" ColumnName="КодГруппы" />
+          <ScalarProperty Name="Дисциплина" ColumnName="Дисциплина" />
+          <ScalarProperty Name="Группа" ColumnName="Группа" />
+          <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+          <ScalarProperty Name="Оценка" ColumnName="Оценка" />
+          <ScalarProperty Name="КодСтудента" ColumnName="КодСтудента" />
+          <ScalarProperty Name="КодДисциплины" ColumnName="КодДисциплины" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="СтудентГруппа">
+      <EntityTypeMapping TypeName="dbModel.СтудентГруппа">
+        <MappingFragment StoreEntitySet="СтудентГруппа">
+          <ScalarProperty Name="Наименование" ColumnName="Наименование" />
+          <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+          <ScalarProperty Name="КодГруппы" ColumnName="КодГруппы" />
+          <ScalarProperty Name="Код" ColumnName="Код" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

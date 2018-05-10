@@ -1,0 +1,39 @@
+﻿<navigation:Page 
+  x:Class="StudBusApp.ДисциплиныPage" 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+  mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"  
+  Style="{StaticResource PageStyle}" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:StudBusApp.Web" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+
+  <Grid x:Name="LayoutRoot">
+    <ScrollViewer x:Name="PageScrollViewer" Style="{StaticResource PageScrollViewerStyle}">
+
+      <StackPanel x:Name="ContentStackPanel" Style="{StaticResource ContentStackPanelStyle}">
+
+        <TextBlock x:Name="HeaderText" Style="{StaticResource HeaderTextStyle}" 
+                           Text="Дисциплины" HorizontalAlignment="Center" />
+                <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Дисциплина, CreateList=true}" Height="0" LoadedData="дисциплинаDomainDataSource_LoadedData" Name="дисциплинаDomainDataSource" QueryName="GetДисциплинаQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                </riaControls:DomainDataSource>
+                <toolkit:DataForm Height="102" Name="дисциплинаDataForm" Width="498" AutoEdit="False" AutoCommit="True" CommandButtonsVisibility="All" AutoGenerateFields="True" ItemsSource="{Binding ElementName=дисциплинаDomainDataSource, Path=Data, Mode=TwoWay}" />
+                <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Студент, CreateList=true}" Height="0" LoadedData="студентDomainDataSource_LoadedData" Name="студентDomainDataSource" QueryName="GetСтудентQuery" Width="0">
+                    <riaControls:DomainDataSource.DomainContext>
+                        <my:StudDomainContext />
+                    </riaControls:DomainDataSource.DomainContext>
+                </riaControls:DomainDataSource>
+                <sdk:DataGrid AutoGenerateColumns="False" Height="300" ItemsSource="{Binding ElementName=дисциплинаDomainDataSource, Path=Data}" Name="дисциплинаDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Width="497">
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn x:Name="наименованиеColumn" Binding="{Binding Path=Наименование}" Header="Наименование" Width="*" />
+                    </sdk:DataGrid.Columns>
+                </sdk:DataGrid>
+                <Button Content="Сохранить" Height="23" Name="button1" Width="75" Click="button1_Click" />
+            </StackPanel>
+
+    </ScrollViewer>
+  </Grid>
+
+</navigation:Page>

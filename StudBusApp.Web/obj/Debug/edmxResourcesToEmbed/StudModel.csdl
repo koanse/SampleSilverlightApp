@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Группа" EntityType="dbModel.Группа" />
+    <EntitySet Name="Дисциплина" EntityType="dbModel.Дисциплина" />
+    <EntitySet Name="Оценка" EntityType="dbModel.Оценка" />
+    <EntitySet Name="Студент" EntityType="dbModel.Студент" />
+    <AssociationSet Name="FK_Студент_Группа" Association="dbModel.FK_Студент_Группа">
+      <End Role="Группа" EntitySet="Группа" />
+      <End Role="Студент" EntitySet="Студент" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Оценка_Дисциплина" Association="dbModel.FK_Оценка_Дисциплина">
+      <End Role="Дисциплина" EntitySet="Дисциплина" />
+      <End Role="Оценка" EntitySet="Оценка" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Оценка_Студент" Association="dbModel.FK_Оценка_Студент">
+      <End Role="Студент" EntitySet="Студент" />
+      <End Role="Оценка" EntitySet="Оценка" />
+    </AssociationSet>
+    <EntitySet Name="ОценкаПодробно" EntityType="dbModel.ОценкаПодробно" />
+    <EntitySet Name="СтудентГруппа" EntityType="dbModel.СтудентГруппа" />
+  </EntityContainer>
+  <EntityType Name="Группа">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Наименование" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+    <NavigationProperty Name="Студент" Relationship="dbModel.FK_Студент_Группа" FromRole="Группа" ToRole="Студент" />
+  </EntityType>
+  <EntityType Name="Дисциплина">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Наименование" Type="String" MaxLength="30" Unicode="true" FixedLength="true" />
+    <NavigationProperty Name="Оценка" Relationship="dbModel.FK_Оценка_Дисциплина" FromRole="Дисциплина" ToRole="Оценка" />
+  </EntityType>
+  <EntityType Name="Оценка">
+    <Key>
+      <PropertyRef Name="КодДисциплины" />
+      <PropertyRef Name="КодСтудента" />
+    </Key>
+    <Property Name="КодДисциплины" Type="Int32" Nullable="false" />
+    <Property Name="КодСтудента" Type="Int32" Nullable="false" />
+    <Property Name="Оценка1" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Дисциплина" Relationship="dbModel.FK_Оценка_Дисциплина" FromRole="Оценка" ToRole="Дисциплина" />
+    <NavigationProperty Name="Студент" Relationship="dbModel.FK_Оценка_Студент" FromRole="Оценка" ToRole="Студент" />
+  </EntityType>
+  <EntityType Name="Студент">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="КодГруппы" Type="Int32" />
+    <Property Name="ФИО" Type="String" MaxLength="30" Unicode="true" FixedLength="true" />
+    <NavigationProperty Name="Группа" Relationship="dbModel.FK_Студент_Группа" FromRole="Студент" ToRole="Группа" />
+    <NavigationProperty Name="Оценка" Relationship="dbModel.FK_Оценка_Студент" FromRole="Студент" ToRole="Оценка" />
+  </EntityType>
+  <Association Name="FK_Студент_Группа">
+    <End Role="Группа" Type="dbModel.Группа" Multiplicity="0..1" />
+    <End Role="Студент" Type="dbModel.Студент" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Группа">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Студент">
+        <PropertyRef Name="КодГруппы" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Оценка_Дисциплина">
+    <End Role="Дисциплина" Type="dbModel.Дисциплина" Multiplicity="1" />
+    <End Role="Оценка" Type="dbModel.Оценка" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Дисциплина">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Оценка">
+        <PropertyRef Name="КодДисциплины" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Оценка_Студент">
+    <End Role="Студент" Type="dbModel.Студент" Multiplicity="1" />
+    <End Role="Оценка" Type="dbModel.Оценка" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Студент">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Оценка">
+        <PropertyRef Name="КодСтудента" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ОценкаПодробно">
+    <Key>
+      <PropertyRef Name="КодДисциплины" />
+      <PropertyRef Name="КодСтудента" />
+      <PropertyRef Name="Оценка" />
+    </Key>
+    <Property Type="Int32" Name="КодДисциплины" Nullable="false" />
+    <Property Type="Int32" Name="КодСтудента" Nullable="false" />
+    <Property Type="Int32" Name="Оценка" Nullable="false" />
+    <Property Type="String" Name="ФИО" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Type="String" Name="Группа" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Type="String" Name="Дисциплина" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Type="Int32" Name="КодГруппы" />
+  </EntityType>
+  <EntityType Name="СтудентГруппа">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Type="Int32" Name="Код" Nullable="false" />
+    <Property Type="Int32" Name="КодГруппы" />
+    <Property Type="String" Name="ФИО" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Type="String" Name="Наименование" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+</Schema>

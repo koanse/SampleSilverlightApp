@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="dbModelStoreContainer">
+    <EntitySet Name="Группа" EntityType="dbModel.Store.Группа" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Дисциплина" EntityType="dbModel.Store.Дисциплина" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Оценка" EntityType="dbModel.Store.Оценка" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Студент" EntityType="dbModel.Store.Студент" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ОценкаПодробно" EntityType="dbModel.Store.ОценкаПодробно" store:Type="Views" store:Schema="dbo" store:Name="ОценкаПодробно">
+      <DefiningQuery>SELECT 
+      [ОценкаПодробно].[КодДисциплины] AS [КодДисциплины], 
+      [ОценкаПодробно].[КодСтудента] AS [КодСтудента], 
+      [ОценкаПодробно].[Оценка] AS [Оценка], 
+      [ОценкаПодробно].[ФИО] AS [ФИО], 
+      [ОценкаПодробно].[Группа] AS [Группа], 
+      [ОценкаПодробно].[Дисциплина] AS [Дисциплина], 
+      [ОценкаПодробно].[КодГруппы] AS [КодГруппы]
+      FROM [dbo].[ОценкаПодробно] AS [ОценкаПодробно]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="СтудентГруппа" EntityType="dbModel.Store.СтудентГруппа" store:Type="Views" store:Schema="dbo" store:Name="СтудентГруппа">
+      <DefiningQuery>SELECT 
+      [СтудентГруппа].[Код] AS [Код], 
+      [СтудентГруппа].[КодГруппы] AS [КодГруппы], 
+      [СтудентГруппа].[ФИО] AS [ФИО], 
+      [СтудентГруппа].[Наименование] AS [Наименование]
+      FROM [dbo].[СтудентГруппа] AS [СтудентГруппа]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Оценка_Дисциплина" Association="dbModel.Store.FK_Оценка_Дисциплина">
+      <End Role="Дисциплина" EntitySet="Дисциплина" />
+      <End Role="Оценка" EntitySet="Оценка" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Оценка_Студент" Association="dbModel.Store.FK_Оценка_Студент">
+      <End Role="Студент" EntitySet="Студент" />
+      <End Role="Оценка" EntitySet="Оценка" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Студент_Группа" Association="dbModel.Store.FK_Студент_Группа">
+      <End Role="Группа" EntitySet="Группа" />
+      <End Role="Студент" EntitySet="Студент" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Группа">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Наименование" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Дисциплина">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Наименование" Type="nchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Оценка">
+    <Key>
+      <PropertyRef Name="КодДисциплины" />
+      <PropertyRef Name="КодСтудента" />
+    </Key>
+    <Property Name="КодДисциплины" Type="int" Nullable="false" />
+    <Property Name="КодСтудента" Type="int" Nullable="false" />
+    <Property Name="Оценка" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Студент">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="КодГруппы" Type="int" />
+    <Property Name="ФИО" Type="nchar" MaxLength="30" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "C:\USERS\АНТОН\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\STUDBUSAPP\STUDBUSAPP.WEB\APP_DATA\DB.MDF.dbo.ОценкаПодробно" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+  <EntityType Name="ОценкаПодробно">
+    <Key>
+      <PropertyRef Name="КодДисциплины" />
+      <PropertyRef Name="КодСтудента" />
+      <PropertyRef Name="Оценка" />
+    </Key>
+    <Property Name="КодДисциплины" Type="int" Nullable="false" />
+    <Property Name="КодСтудента" Type="int" Nullable="false" />
+    <Property Name="Оценка" Type="int" Nullable="false" />
+    <Property Name="ФИО" Type="nchar" MaxLength="30" />
+    <Property Name="Группа" Type="nchar" MaxLength="10" />
+    <Property Name="Дисциплина" Type="nchar" MaxLength="30" />
+    <Property Name="КодГруппы" Type="int" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "C:\USERS\АНТОН\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\STUDBUSAPP\STUDBUSAPP.WEB\APP_DATA\DB.MDF.dbo.СтудентГруппа" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+  <EntityType Name="СтудентГруппа">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="int" Nullable="false" />
+    <Property Name="КодГруппы" Type="int" />
+    <Property Name="ФИО" Type="nchar" MaxLength="30" />
+    <Property Name="Наименование" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK_Оценка_Дисциплина">
+    <End Role="Дисциплина" Type="dbModel.Store.Дисциплина" Multiplicity="1" />
+    <End Role="Оценка" Type="dbModel.Store.Оценка" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Дисциплина">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Оценка">
+        <PropertyRef Name="КодДисциплины" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Оценка_Студент">
+    <End Role="Студент" Type="dbModel.Store.Студент" Multiplicity="1" />
+    <End Role="Оценка" Type="dbModel.Store.Оценка" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Студент">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Оценка">
+        <PropertyRef Name="КодСтудента" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Студент_Группа">
+    <End Role="Группа" Type="dbModel.Store.Группа" Multiplicity="0..1" />
+    <End Role="Студент" Type="dbModel.Store.Студент" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Группа">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Студент">
+        <PropertyRef Name="КодГруппы" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

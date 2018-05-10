@@ -1,0 +1,2 @@
+C:\Users\Антон\Documents\Visual Studio 2010\Projects\StudBusApp\StudBusApp\Generated_Code\StudBusApp.Web.g.cs
+C:\Users\Антон\Documents\Visual Studio 2010\Projects\StudBusApp\StudBusApp\Generated_Code\Models\Shared\User.shared.cs
